@@ -1,0 +1,1 @@
+luvi . --main test.lua
