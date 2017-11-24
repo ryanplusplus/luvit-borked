@@ -49,4 +49,63 @@ return function(test)
 
     assert(equal(expected, actual))
   end)
+
+  test('it should support before_each in a flat describe', function()
+    local actual = test_runner(function()
+      describe('describe', function()
+        local x = 1
+
+        before_each(function()
+          x = x + 1
+        end)
+
+        it('first', function()
+          assert(x == 2)
+        end)
+
+        it('second', function()
+          assert(x == 3)
+        end)
+      end)
+    end)
+
+    local expected = {
+      { name = 'describe first', pass = true },
+      { name = 'describe second', pass = true }
+    }
+
+    assert(equal(expected, actual))
+  end)
+
+  test('it should support after_each in a flat describe', function()
+    local actual = test_runner(function()
+      describe('describe', function()
+        local x = 3
+
+        after_each(function()
+          x = x - 1
+        end)
+
+        it('first', function()
+          assert(x == 3)
+        end)
+
+        it('second', function()
+          assert(x == 2)
+        end)
+
+        it('third', function()
+          assert(x == 1)
+        end)
+      end)
+    end)
+
+    local expected = {
+      { name = 'describe first', pass = true },
+      { name = 'describe second', pass = true },
+      { name = 'describe third', pass = true }
+    }
+
+    assert(equal(expected, actual))
+  end)
 end
