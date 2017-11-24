@@ -108,4 +108,75 @@ return function(test)
 
     assert(equal(expected, actual))
   end)
+
+  test('it should support before_each in a nested describe', function()
+    local actual = test_runner(function()
+      describe('outer', function()
+        local x = 1
+
+        before_each(function()
+          x = x + 1
+        end)
+
+        describe('inner', function()
+          before_each(function()
+            x = x + 2
+          end)
+
+          it('first', function()
+            assert(x == 4)
+          end)
+
+          it('second', function()
+            assert(x == 7)
+          end)
+        end)
+      end)
+    end)
+
+    local expected = {
+      { name = 'outer inner first', pass = true },
+      { name = 'outer inner second', pass = true }
+    }
+
+    assert(equal(expected, actual))
+  end)
+
+  test('it should support after_each in a nested describe', function()
+    local actual = test_runner(function()
+      describe('outer', function()
+        local x = ''
+
+        after_each(function()
+          x = x .. 'outer'
+        end)
+
+        describe('inner', function()
+          after_each(function()
+            x = x .. 'inner'
+          end)
+
+          it('first', function()
+            assert(x == '')
+          end)
+
+          it('second', function()
+            assert(x == 'innerouter')
+          end)
+
+          it('third', function()
+            assert(x == 'innerouterinnerouter')
+          end)
+        end)
+      end)
+    end)
+
+    local expected = {
+      { name = 'outer inner first', pass = true },
+      { name = 'outer inner second', pass = true },
+      { name = 'outer inner third', pass = true }
+    }
+
+    assert(equal(expected, actual))
+  end)
 end

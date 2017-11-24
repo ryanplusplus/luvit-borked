@@ -2,7 +2,7 @@ local specs = {
   './spec/test_runner/test_runner_spec.lua'
 }
 
-require 'luvit'(function()
+require 'luvit'(coroutine.wrap(function()
   local errors = {}
 
   local function Test(spec)
@@ -29,4 +29,4 @@ require 'luvit'(function()
   end
 
   io.write('\n')
-end)
+end))
