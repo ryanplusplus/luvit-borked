@@ -179,4 +179,20 @@ return function(test)
 
     assert(equal(expected, actual))
   end)
+
+  test('it should provide luassert', function()
+    local actual = test_runner(function()
+      describe('borked', function()
+        it('should allow luassert assertions', function()
+          assert.is_true(true)
+        end)
+      end)
+    end)
+
+    local expected = {
+      { name = 'borked should allow luassert assertions', pass = true }
+    }
+
+    assert(equal(expected, actual))
+  end)
 end

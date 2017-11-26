@@ -8,7 +8,8 @@
     homepage = 'https://github.com/ryanplusplus/luvit-borked',
     dependencies = {
       'luvit/luvit@2.9.1',
-      'luvit/deep-equal@0.1.2'
+      'luvit/deep-equal@0.1.2',
+      'ScottBrooks/luassert@1.7.9-2'
     },
     files = {
       '**.lua',
